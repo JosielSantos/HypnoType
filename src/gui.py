@@ -63,3 +63,4 @@ class ExpanderApp(wx.Frame):
                 save_expansions(expansions)
                 self.load_expansions_into_list()
         dialog.Destroy()
+        self.list_ctrl.SetFocus()
