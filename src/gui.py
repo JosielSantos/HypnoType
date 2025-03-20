@@ -35,10 +35,12 @@ class ExpanderApp(wx.Frame):
         super().__init__(None, title="Hypno Type", size=(400, 400))
         panel = wx.Panel(self)
         vbox = wx.BoxSizer(wx.VERTICAL)
-        self.list_ctrl = wx.ListCtrl(panel, style=wx.LC_REPORT)
+        self.list_ctrl = wx.ListCtrl(
+            panel, style=wx.LC_REPORT | wx.LC_SINGLE_SEL)
         self.list_ctrl.InsertColumn(0, "Atalho", width=150)
         self.list_ctrl.InsertColumn(1, "Expansão", width=200)
         self.load_expansions_into_list()
+        self.list_ctrl.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.on_edit_expansion)
         self.add_button = wx.Button(panel, label="Adicionar")
         self.add_button.Bind(wx.EVT_BUTTON, self.on_add)
         vbox.Add(self.list_ctrl, 1, wx.EXPAND | wx.ALL, 10)
@@ -64,3 +66,25 @@ class ExpanderApp(wx.Frame):
                 self.load_expansions_into_list()
         dialog.Destroy()
         self.list_ctrl.SetFocus()
+
+    def on_edit_expansion(self, event):
+        index = event.GetIndex()
+        expansion = self.list_ctrl.GetItemText(index, 1)
+        edited_expansion = prompt_text_dialog(
+            self, "Editar expansão", "Expansão", expansion).strip()
+        if edited_expansion and expansion != edited_expansion:
+            shortcut = self.list_ctrl.GetItemText(index, 0)
+            expansions = load_expansions()
+            expansions[shortcut] = edited_expansion
+            save_expansions(expansions)
+            self.load_expansions_into_list()
+        event.Skip()
+
+
+def prompt_text_dialog(parent, dialog_title, edit_label, value=''):
+    dialog = wx.TextEntryDialog(
+        parent, caption=dialog_title, message=edit_label, value=str(value))
+    dialog.ShowModal()
+    result = dialog.GetValue()
+    dialog.Destroy()
+    return result
