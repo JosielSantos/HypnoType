@@ -1,22 +1,20 @@
 import json
 import os
 import shutil
+from constants import EXPANSIONS_FILE
 from logger import logger
-
-
-APPLICATION_DIRECTORY = os.path.join(os.path.expanduser("~"), ".hypno-type")
-EXPANSIONS_FILE = os.path.join(APPLICATION_DIRECTORY, "expansions.json")
-
-
-if not os.path.exists(APPLICATION_DIRECTORY):
-    os.makedirs(APPLICATION_DIRECTORY)
 
 
 def load_expansions():
     try:
         with open(EXPANSIONS_FILE, encoding="utf-8") as f:
             return json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError):
+    except FileNotFoundError:
+        logger.info(
+            "Expansions file not found; Starting with empty expanssions")
+        return {}
+    except json.JSONDecodeError as e:
+        logger.warn(f"Failed to load expansions: Invalid JSON - {e}")
         return {}
 
 

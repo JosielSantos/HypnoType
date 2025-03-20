@@ -1,6 +1,8 @@
+from constants import APPLICATION_DIRECTORY
 from gui import ExpanderApp
 from expander import start_expander
 from logger import logger
+import os
 import wx
 
 
@@ -14,5 +16,7 @@ def main():
 
 
 if __name__ == "__main__":
+    if not os.path.exists(APPLICATION_DIRECTORY):
+        os.makedirs(APPLICATION_DIRECTORY)
     main()
     logger.debug('Application terminated')
