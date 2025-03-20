@@ -61,6 +61,11 @@ class Expander:
         self.expansions[shortcut] = expansion
         self.save_expansions_file()
 
+    def remove_expansion(self, shortcut):
+        if shortcut in self.expansions:
+            del self.expansions[shortcut]
+            self.save_expansions_file()
+
     def save_expansions_file(self):
         self.backup_expansions_file()
         try:

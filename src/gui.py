@@ -43,6 +43,7 @@ class ExpanderApp(wx.Frame):
         self.list_ctrl.InsertColumn(1, "Expansão", width=200)
         self.load_expansions_into_list()
         self.list_ctrl.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.on_edit_expansion)
+        self.list_ctrl.Bind(wx.EVT_KEY_DOWN, self.on_list_key_down)
         self.add_button = wx.Button(panel, label="Adicionar")
         self.add_button.Bind(wx.EVT_BUTTON, self.on_add)
         vbox.Add(self.list_ctrl, 1, wx.EXPAND | wx.ALL, 10)
@@ -57,6 +58,19 @@ class ExpanderApp(wx.Frame):
                 shortcut
             )
             self.list_ctrl.SetItem(index, 1, expansion)
+
+    def on_list_key_down(self, event):
+        if event.GetKeyCode() == wx.WXK_DELETE:
+            self.on_delete_expansion()
+        else:
+            event.Skip()
+
+    def on_delete_expansion(self):
+        selected = self.list_ctrl.GetFirstSelected()
+        if selected != -1:
+            shortcut = self.list_ctrl.GetItemText(selected, 0)
+            self.expander.remove_expansion(shortcut)
+            self.load_expansions_into_list()
 
     def on_add(self, event):
         dialog = AddShortcutDialog(self)
