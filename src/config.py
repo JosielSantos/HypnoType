@@ -1,5 +1,6 @@
 import json
 import os
+import shutil
 
 CONFIG_DIR = os.path.join(os.path.expanduser("~"), ".hypno-type")
 EXPANSIONS_FILE = os.path.join(CONFIG_DIR, "expansions.json")
@@ -17,5 +18,7 @@ def load_expansions():
 
 
 def save_expansions(expansions):
+    if os.path.exists(EXPANSIONS_FILE):
+        shutil.copy(EXPANSIONS_FILE, EXPANSIONS_FILE + ".bak")
     with open(EXPANSIONS_FILE, "w", encoding="utf-8") as f:
         json.dump(expansions, f, indent=4)
