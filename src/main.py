@@ -1,5 +1,5 @@
 from constants import APPLICATION_DIRECTORY, EXPANSIONS_FILE
-from gui import ExpanderApp
+from gui.main import MainFrame
 from expander import Expander
 from logger import logger
 import os
@@ -11,7 +11,7 @@ def main():
     expander.load_expansions_file()
     expander.start()
     app = wx.App(False)
-    frame = ExpanderApp(expander)
+    frame = MainFrame(expander)
     frame.Show()
     app.MainLoop()
     logger.debug('Application started')

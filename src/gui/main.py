@@ -1,35 +1,9 @@
 import wx
+from .expansion_dialogs import AddShortcutDialog
+from .utils import prompt_text_dialog
 
 
-class AddShortcutDialog(wx.Dialog):
-    def __init__(self, parent):
-        super().__init__(parent, title="Adicionar Atalho", size=(300, 200))
-        panel = wx.Panel(self)
-        vbox = wx.BoxSizer(wx.VERTICAL)
-        wx.StaticText(panel, label="Atalho:")
-        self.shortcut_input = wx.TextCtrl(panel)
-        vbox.Add(self.shortcut_input, 0, wx.EXPAND | wx.ALL, 5)
-        wx.StaticText(panel, label="Expansão:")
-        self.expansion_input = wx.TextCtrl(panel)
-        vbox.Add(self.expansion_input, 0, wx.EXPAND | wx.ALL, 5)
-        hbox = wx.BoxSizer(wx.HORIZONTAL)
-        self.ok_button = wx.Button(panel, label="OK")
-        self.cancel_button = wx.Button(panel, label="Cancelar")
-        hbox.Add(self.ok_button, 1, wx.EXPAND | wx.ALL, 5)
-        hbox.Add(self.cancel_button, 1, wx.EXPAND | wx.ALL, 5)
-        vbox.Add(hbox, 0, wx.ALIGN_CENTER)
-        self.ok_button.Bind(wx.EVT_BUTTON, self.on_ok)
-        self.cancel_button.Bind(wx.EVT_BUTTON, self.on_cancel)
-        panel.SetSizer(vbox)
-
-    def on_ok(self, event):
-        self.EndModal(wx.ID_OK)
-
-    def on_cancel(self, event):
-        self.EndModal(wx.ID_CANCEL)
-
-
-class ExpanderApp(wx.Frame):
+class MainFrame(wx.Frame):
     def __init__(self, expander):
         super().__init__(None, title="Hypno Type", size=(400, 400))
         self.expander = expander
@@ -95,16 +69,3 @@ class ExpanderApp(wx.Frame):
             self.expander.add_or_edit_expansion(shortcut, edited_expansion)
             self.load_expansions_into_list()
         event.Skip()
-
-
-def prompt_text_dialog(parent, dialog_title, edit_label, value=''):
-    dialog = wx.TextEntryDialog(
-        parent,
-        caption=dialog_title,
-        message=edit_label,
-        value=str(value)
-    )
-    dialog.ShowModal()
-    result = dialog.GetValue()
-    dialog.Destroy()
-    return result
