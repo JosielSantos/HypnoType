@@ -11,7 +11,8 @@ def load_expansions():
             return json.load(f)
     except FileNotFoundError:
         logger.info(
-            "Expansions file not found; Starting with empty expanssions")
+            "Expansions file not found; Starting with empty expanssions"
+        )
         return {}
     except json.JSONDecodeError as e:
         logger.warn(f"Failed to load expansions: Invalid JSON - {e}")
