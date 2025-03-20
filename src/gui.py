@@ -1,5 +1,4 @@
 import wx
-from config import save_expansions
 
 
 class AddShortcutDialog(wx.Dialog):
@@ -65,11 +64,11 @@ class ExpanderApp(wx.Frame):
             shortcut = dialog.shortcut_input.GetValue().strip()
             expansion = dialog.expansion_input.GetValue().strip()
             if shortcut and expansion:
-                self.expander.expansions[shortcut] = expansion
-                save_expansions(self.expander.expansions)
+                self.expander.add_or_edit_expansion(shortcut, expansion)
                 self.load_expansions_into_list()
         dialog.Destroy()
         self.list_ctrl.SetFocus()
+        event.Skip()
 
     def on_edit_expansion(self, event):
         index = event.GetIndex()
@@ -79,8 +78,7 @@ class ExpanderApp(wx.Frame):
         ).strip()
         if edited_expansion and expansion != edited_expansion:
             shortcut = self.list_ctrl.GetItemText(index, 0)
-            self.expander.expansions[shortcut] = edited_expansion
-            save_expansions(self.expander.expansions)
+            self.expander.add_or_edit_expansion(shortcut, edited_expansion)
             self.load_expansions_into_list()
         event.Skip()
 

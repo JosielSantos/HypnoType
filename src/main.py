@@ -1,5 +1,4 @@
-from config import load_expansions
-from constants import APPLICATION_DIRECTORY
+from constants import APPLICATION_DIRECTORY, EXPANSIONS_FILE
 from gui import ExpanderApp
 from expander import Expander
 from logger import logger
@@ -8,7 +7,8 @@ import wx
 
 
 def main():
-    expander = Expander(load_expansions())
+    expander = Expander(EXPANSIONS_FILE)
+    expander.load_expansions_file()
     expander.start()
     app = wx.App(False)
     frame = ExpanderApp(expander)

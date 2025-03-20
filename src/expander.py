@@ -1,13 +1,30 @@
+import json
 import keyboard
 import pyperclip
 import pyautogui
+import os
+import shutil
 import threading
 from logger import logger
 
 
 class Expander:
-    def __init__(self, expansions):
-        self.expansions = expansions
+    def __init__(self, expansions_file):
+        self.expansions_file = expansions_file
+        self.expansions = {}
+
+    def load_expansions_file(self):
+        try:
+            with open(self.expansions_file, encoding="utf-8") as f:
+                self.expansions = json.load(f)
+        except FileNotFoundError:
+            logger.info(
+                "Expansions file not found; Starting with empty expanssions"
+            )
+            self.expansions = {}
+        except json.JSONDecodeError as e:
+            logger.warn(f"Failed to load expansions: Invalid JSON - {e}")
+            self.expansions = {}
 
     def start(self):
         thread = threading.Thread(
@@ -39,3 +56,26 @@ class Expander:
                         pyperclip.copy(replacement)
                         pyautogui.hotkey("ctrl", "v")
                         typed_text = ""
+
+    def add_or_edit_expansion(self, shortcut, expansion):
+        self.expansions[shortcut] = expansion
+        self.save_expansions_file()
+
+    def save_expansions_file(self):
+        self.backup_expansions_file()
+        try:
+            with open(self.expansions_file, "w", encoding="utf-8") as f:
+                json.dump(self.expansions, f, indent=4)
+        except Exception as e:
+            logger.error(f"Failed to save expansions: {e}")
+            raise e
+
+    def backup_expansions_file(self):
+        if os.path.exists(self.expansions_file):
+            try:
+                shutil.copy(
+                    self.expansions_file,
+                    self.expansions_file + ".bak"
+                )
+            except Exception as e:
+                logger.warn(f"Failed to create backup of expansions: {e}")
