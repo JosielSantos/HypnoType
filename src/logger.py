@@ -1,8 +1,8 @@
 import logging
 import os
-from constants import APPLICATION_DIRECTORY
+from constants import APPLICATION_USER_DIRECTORY
 
-LOG_FILE = os.path.join(APPLICATION_DIRECTORY, "hypno-type.log")
+LOG_FILE = os.path.join(APPLICATION_USER_DIRECTORY, "hypno-type.log")
 
 logging.basicConfig(
     level=logging.DEBUG,
