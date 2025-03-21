@@ -5,6 +5,8 @@ import pyautogui
 import os
 import shutil
 import threading
+import winsound
+from constants import SOUNDS_DIRECTORY
 from logger import logger
 
 
@@ -55,6 +57,10 @@ class Expander:
                         keyboard.write("\b" * len(shortcut))
                         pyperclip.copy(replacement)
                         pyautogui.hotkey("ctrl", "v")
+                        winsound.PlaySound(
+                            SOUNDS_DIRECTORY + "/text_expanded.wav",
+                            winsound.SND_FILENAME | winsound.SND_ASYNC
+                        )
                         typed_text = ""
 
     def add_or_replace_expansion(self, shortcut, expansion):
