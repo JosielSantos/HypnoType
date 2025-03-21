@@ -57,14 +57,23 @@ class Expander:
                         pyautogui.hotkey("ctrl", "v")
                         typed_text = ""
 
-    def add_or_edit_expansion(self, shortcut, expansion):
+    def add_or_replace_expansion(self, shortcut, expansion):
         self.expansions[shortcut] = expansion
         self.save_expansions_file()
 
     def remove_expansion(self, shortcut):
-        if shortcut in self.expansions:
+        if self.shortcut_exists(shortcut):
             del self.expansions[shortcut]
             self.save_expansions_file()
+
+    def rename_shortcut(self, old_shortcut, new_shortcut):
+        if self.shortcut_exists(old_shortcut):
+            expansion = self.expansions[old_shortcut]
+            del self.expansions[old_shortcut]
+            self.add_or_replace_expansion(new_shortcut, expansion)
+
+    def shortcut_exists(self, shortcut):
+        return shortcut in self.expansions
 
     def save_expansions_file(self):
         self.backup_expansions_file()
