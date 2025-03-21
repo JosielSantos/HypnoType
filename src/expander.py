@@ -52,16 +52,20 @@ class Expander:
                     typed_text += " "
                 for shortcut, replacement in self.expansions.items():
                     if typed_text.endswith(shortcut):
-                        logger.info(
-                            f"Replacing: '{shortcut}' -> '{replacement}'")
-                        keyboard.write("\b" * len(shortcut))
-                        pyperclip.copy(replacement)
-                        pyautogui.hotkey("ctrl", "v")
-                        winsound.PlaySound(
-                            SOUNDS_DIRECTORY + "/text_expanded.wav",
-                            winsound.SND_FILENAME | winsound.SND_ASYNC
-                        )
+                        self.expand_shortcut(shortcut, replacement)
                         typed_text = ""
+
+    def expand_shortcut(self, shortcut, replacement):
+        logger.info(
+            f"Replacing: '{shortcut}' -> '{replacement}'"
+        )
+        keyboard.write("\b" * len(shortcut))
+        pyperclip.copy(replacement)
+        pyautogui.hotkey("ctrl", "v")
+        winsound.PlaySound(
+            SOUNDS_DIRECTORY + "/text_expanded.wav",
+            winsound.SND_FILENAME | winsound.SND_ASYNC
+        )
 
     def add_or_replace_expansion(self, shortcut, expansion):
         self.expansions[shortcut] = expansion
