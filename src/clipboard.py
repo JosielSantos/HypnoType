@@ -20,13 +20,13 @@ class ClipboardBackup:
                     if last_error == 0:
                         break
                     else:
-                        logger.warn(f"Error when enumerating clipboard formats: {last_error}")
+                        logger.warning(f"Error when enumerating clipboard formats: {last_error}")
                 try:
                     data = win32clipboard.GetClipboardData(fmt)
                     self._backup[fmt] = data
                 except (TypeError, pywintypes.error) as e:
                     self._backup[fmt] = None
-                    logger.warn(f"Failed when getting clipboard data with format {fmt}: {e}")
+                    logger.warning(f"Failed when getting clipboard data with format {fmt}: {e}")
         finally:
             win32clipboard.CloseClipboard()
 
@@ -41,6 +41,6 @@ class ClipboardBackup:
                     try:
                         win32clipboard.SetClipboardData(fmt, data)
                     except Exception as e:
-                        logger.warn(f"Failed when restoring clipboard data with format {fmt}: {e}")
+                        logger.warning(f"Failed when restoring clipboard data with format {fmt}: {e}")
         finally:
             win32clipboard.CloseClipboard()

@@ -26,7 +26,7 @@ class Replacer:
             )
             self.shortcuts = []
         except json.JSONDecodeError as e:
-            logger.warn(f"Failed to load shortcuts: Invalid JSON - {e}")
+            logger.warning(f"Failed to load shortcuts: Invalid JSON - {e}")
             self.shortcuts = []
 
     def start(self):
@@ -125,4 +125,4 @@ class Replacer:
                     self.shortcuts_file + ".bak"
                 )
             except Exception as e:
-                logger.warn(f"Failed to create backup of shortcuts: {e}")
+                logger.warning(f"Failed to create backup of shortcuts: {e}")
