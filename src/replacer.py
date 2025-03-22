@@ -6,6 +6,7 @@ import os
 import shutil
 import threading
 import winsound
+from clipboard import ClipboardBackup
 from constants import SOUNDS_DIRECTORY
 from logger import logger
 
@@ -60,12 +61,15 @@ class Replacer:
                         typed_text = ""
 
     def replace_shortcut(self, shortcut, replacement, enter_after_replace):
+        clipboard_backup = ClipboardBackup()
+        clipboard_backup.save()
         logger.info(
             f"Replacing: '{shortcut}' -> '{replacement}'"
         )
         keyboard.write("\b" * len(shortcut))
         pyperclip.copy(replacement)
         pyautogui.hotkey("ctrl", "v")
+        clipboard_backup.restore()
         if enter_after_replace:
             keyboard.send('enter')
         winsound.PlaySound(
