@@ -5,7 +5,7 @@ from .utils import prompt_text_dialog
 
 class MainFrame(wx.Frame):
     def __init__(self, replacer):
-        super().__init__(None, title="Hypno Type", size=(400, 400))
+        super().__init__(None, title="HypnoType", size=(400, 400))
         self.replacer = replacer
         panel = wx.Panel(self)
         vbox = wx.BoxSizer(wx.VERTICAL)

@@ -2,7 +2,7 @@ import logging
 import os
 from constants import APPLICATION_USER_DIRECTORY
 
-LOG_FILE = os.path.join(APPLICATION_USER_DIRECTORY, "hypno-type.log")
+LOG_FILE = os.path.join(APPLICATION_USER_DIRECTORY, "hypnotype.log")
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -13,4 +13,4 @@ logging.basicConfig(
     ]
 )
 
-logger = logging.getLogger("Hypno Type")
+logger = logging.getLogger("HypnoType")
