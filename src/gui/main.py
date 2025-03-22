@@ -72,7 +72,9 @@ class MainFrame(wx.Frame):
             shortcut = dialog.shortcut_input.GetValue().strip()
             replacement = dialog.replacement_input.GetValue().strip()
             if shortcut and replacement:
-                self.replacer.add_shortcut(shortcut, replacement)
+                enter_after_replace = dialog.enter_after_replace_checkbox.GetValue()
+                self.replacer.add_shortcut(
+                    shortcut, replacement, enter_after_replace)
                 self.load_shortcuts_into_list()
         dialog.Destroy()
         self.list_ctrl.SetFocus()

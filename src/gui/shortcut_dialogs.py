@@ -12,6 +12,9 @@ class AddShortcutDialog(wx.Dialog):
         wx.StaticText(panel, label="Substituir por:")
         self.replacement_input = wx.TextCtrl(panel)
         vbox.Add(self.replacement_input, 0, wx.EXPAND | wx.ALL, 5)
+        self.enter_after_replace_checkbox = wx.CheckBox(
+            panel, label="Apertar Enter depois de substituir")
+        vbox.Add(self.enter_after_replace_checkbox, 0, wx.ALL, 5)
         hbox = wx.BoxSizer(wx.HORIZONTAL)
         self.ok_button = wx.Button(panel, label="OK")
         self.cancel_button = wx.Button(panel, label="Cancelar")

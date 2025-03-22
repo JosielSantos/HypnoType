@@ -53,25 +53,31 @@ class Replacer:
                 for item in self.shortcuts:
                     if typed_text.endswith(item['shortcut']):
                         self.replace_shortcut(
-                            item['shortcut'], item['replacement'])
+                            item['shortcut'],
+                            item['replacement'],
+                            item['enter_after_replace']
+                        )
                         typed_text = ""
 
-    def replace_shortcut(self, shortcut, replacement):
+    def replace_shortcut(self, shortcut, replacement, enter_after_replace):
         logger.info(
             f"Replacing: '{shortcut}' -> '{replacement}'"
         )
         keyboard.write("\b" * len(shortcut))
         pyperclip.copy(replacement)
         pyautogui.hotkey("ctrl", "v")
+        if enter_after_replace:
+            keyboard.send('enter')
         winsound.PlaySound(
             SOUNDS_DIRECTORY + "/text_expanded.wav",
             winsound.SND_FILENAME | winsound.SND_ASYNC
         )
 
-    def add_shortcut(self, shortcut, replacement):
+    def add_shortcut(self, shortcut, replacement, enter_after_replace):
         self.shortcuts.append({
             'shortcut': shortcut,
-            'replacement': replacement
+            'replacement': replacement,
+            'enter_after_replace': enter_after_replace,
         })
         self.save_shortcuts_file()
 
